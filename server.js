@@ -1,14 +1,21 @@
-import { readSync } from 'fs';
-import http from 'http';
+import express from 'express';
+import fs from 'fs';
+import path from 'path';
+import config from './config';
 
-const server = http.createServer();
+const app = express();
 
-server.listen(5000);
+// routes
+app.get('/', (req, res) => {
+  res.send('hello world');
+});
 
-server.on('request', (req, res) => {
-  res.write('Hello HTTP!\n');
-  setTimeout(() => {
-    res.write('I can stream!\n');
-    res.end();
-  }, 3000);
+app.get('/about.html', (req, res) => {
+  fs.readFile(path.join(__dirname, 'about.html'), (err, data) => {
+    res.send(data.toString());
+  });
+});
+
+app.listen(config.port, () => {
+  console.log(`Server is listening on port ${config.port}`);
 });
