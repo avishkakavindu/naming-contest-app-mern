@@ -2,6 +2,7 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import config from './config';
+import apiRouter from './api/index';
 
 const app = express();
 
@@ -10,11 +11,8 @@ app.get('/', (req, res) => {
   res.send('hello world');
 });
 
-app.get('/about.html', (req, res) => {
-  fs.readFile(path.join(__dirname, 'about.html'), (err, data) => {
-    res.send(data.toString());
-  });
-});
+app.use('/api', apiRouter());
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.listen(config.port, () => {
   console.log(`Server is listening on port ${config.port}`);
