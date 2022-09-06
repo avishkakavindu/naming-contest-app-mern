@@ -6,9 +6,16 @@ import apiRouter from './api/index';
 
 const app = express();
 
+// set for ejs
+app.set('view engine', 'ejs');
+
 // routes
 app.get('/', (req, res) => {
-  res.send('hello world');
+  const context = {
+    content: 'hello world from server!',
+  };
+
+  res.render('index', context);
 });
 
 app.use('/api', apiRouter());
